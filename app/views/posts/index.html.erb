@@ -1,0 +1,19 @@
+<h1>数学記事一覧</h1>
+
+<p>
+  <%= link_to "新規投稿", new_post_path %>
+</p>
+
+<% @posts.each do |post| %>
+  <div style="margin-bottom: 20px;">
+    <h2>
+      <%= link_to post.title, post_path(post) %>
+    </h2>
+
+    <p>
+      投稿者：<%= post.user.name %>
+    </p>
+  </div>
+<% end %>
+
+<%= button_to "ログアウト", logout_path, method: :delete %>
