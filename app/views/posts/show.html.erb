@@ -3,12 +3,26 @@
 <p>
   投稿者：<%= @post.user.name %>
 </p>
+<p>
+  <% @post.tags.each do |tag| %>
+    <%= link_to "##{tag.name}", tag_path(tag.name) %>
+  <% end %>
+</p>
 
 <hr>
 
-<p>
-  <%= simple_format(@post.content) %>
-</p>
+<div id="post-content">
+  <%= markdown(@post.content).html_safe %>
+</div>
+
+<% if @post.user == current_user %>
+  <%= link_to "編集", edit_post_path(@post) %>
+
+  <%= button_to "削除",
+                post_path(@post),
+                method: :delete,
+                data: { turbo_confirm: "本当に削除しますか？" } %>
+<% end %>
 
 <p>
   <%= link_to "一覧に戻る", posts_path %>

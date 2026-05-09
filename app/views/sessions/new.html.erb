@@ -1,17 +1,100 @@
 <h1>ログイン</h1>
 
-<%= form_with url: login_path, local: true do |f| %>
-  <div>
-    <%= label_tag :email %>
-    <%= email_field_tag :email %>
+<div class="auth-container">
+
+  <div class="auth-card">
+
+    <%= form_with url: login_path, local: true do |f| %>
+
+      <div class="form-group">
+        <%= label_tag :email, "メールアドレス" %><br>
+
+        <%= email_field_tag :email,
+                            nil,
+                            class: "auth-input",
+                            placeholder: "example@email.com" %>
+      </div>
+
+      <div class="form-group">
+        <%= label_tag :password, "パスワード" %><br>
+
+        <%= password_field_tag :password,
+                               nil,
+                               class: "auth-input",
+                               placeholder: "パスワードを入力" %>
+      </div>
+
+      <div class="submit-area">
+        <%= submit_tag "ログイン", class: "auth-button" %>
+      </div>
+
+    <% end %>
+
+    <hr>
+
+    <div class="auth-links">
+      <p>
+        アカウントをお持ちでない方
+      </p>
+
+      <%= link_to "新規登録はこちら", signup_path, class: "signup-link" %>
+    </div>
+
   </div>
 
-  <div>
-    <%= label_tag :password %>
-    <%= password_field_tag :password %>
-  </div>
+</div>
 
-  <div>
-    <%= submit_tag "ログイン" %>
-  </div>
-<% end %>
+<style>
+  .auth-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 80px;
+  }
+
+  .auth-card {
+    width: 100%;
+    max-width: 420px;
+    background: white;
+    padding: 35px;
+    border-radius: 14px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  }
+
+  .form-group {
+    margin-bottom: 24px;
+  }
+
+  .auth-input {
+    width: 100%;
+    padding: 12px;
+    margin-top: 8px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 15px;
+    box-sizing: border-box;
+  }
+
+  .submit-area {
+    margin-top: 30px;
+  }
+
+  .auth-button {
+    width: 100%;
+    padding: 12px;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    cursor: pointer;
+  }
+
+  .auth-links {
+    text-align: center;
+    margin-top: 25px;
+  }
+
+  .signup-link {
+    display: inline-block;
+    margin-top: 10px;
+    font-weight: bold;
+  }
+</style>

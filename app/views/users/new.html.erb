@@ -1,32 +1,175 @@
 <h1>新規登録</h1>
 
-<%= form_with model: @user, url: signup_path, local: true do |f| %>
-  <div>
-    <%= f.label :name %>
-    <%= f.text_field :name %>
+<div class="auth-container">
+
+  <div class="auth-card">
+
+    <%= form_with model: @user, url: signup_path, local: true do |f| %>
+
+      <% if @user.errors.any? %>
+        <div class="error-box">
+          <h2>
+            <%= pluralize(@user.errors.count, "error") %> 件のエラーがあります
+          </h2>
+
+          <ul>
+            <% @user.errors.full_messages.each do |message| %>
+              <li><%= message %></li>
+            <% end %>
+          </ul>
+        </div>
+      <% end %>
+
+      <!-- ユーザー名 -->
+      <div class="form-group">
+        <%= f.label :name, "ユーザー名" %><br>
+
+        <%= f.text_field :name,
+                         class: "auth-input",
+                         placeholder: "ユーザー名を入力" %>
+      </div>
+
+      <!-- メール -->
+      <div class="form-group">
+        <%= f.label :email, "メールアドレス" %><br>
+
+        <%= f.email_field :email,
+                          class: "auth-input",
+                          placeholder: "example@email.com" %>
+      </div>
+
+      <!-- パスワード -->
+      <div class="form-group">
+        <%= f.label :password, "パスワード" %><br>
+
+        <%= f.password_field :password,
+                             class: "auth-input",
+                             placeholder: "パスワードを入力" %>
+      </div>
+
+      <!-- パスワード確認 -->
+      <div class="form-group">
+        <%= f.label :password_confirmation, "パスワード確認" %><br>
+
+        <%= f.password_field :password_confirmation,
+                             class: "auth-input",
+                             placeholder: "もう一度入力" %>
+      </div>
+
+      <!-- プロフィール -->
+      <div class="form-group">
+        <%= f.label :profile, "プロフィール" %><br>
+
+        <%= f.text_area :profile,
+                        rows: 6,
+                        class: "profile-textarea",
+                        placeholder: "自己紹介や興味のある分野を書いてください" %>
+      </div>
+
+      <!-- 登録ボタン -->
+      <div class="submit-area">
+        <%= f.submit "登録する", class: "auth-button" %>
+      </div>
+
+    <% end %>
+
+    <hr>
+
+    <div class="auth-links">
+      <p>
+        すでにアカウントをお持ちですか？
+      </p>
+
+      <%= link_to "ログインはこちら", login_path, class: "login-link" %>
+    </div>
+
   </div>
 
-  <div>
-    <%= f.label :email %>
-    <%= f.email_field :email %>
-  </div>
+</div>
 
-  <div>
-    <%= f.label :password %>
-    <%= f.password_field :password %>
-  </div>
+<style>
+  .auth-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 60px;
+    margin-bottom: 60px;
+  }
 
-  <div>
-    <%= f.label :password_confirmation %>
-    <%= f.password_field :password_confirmation %>
-  </div>
+  .auth-card {
+    width: 100%;
+    max-width: 520px;
+    background: white;
+    padding: 40px;
+    border-radius: 16px;
+    box-shadow: 0 6px 24px rgba(0, 0, 0, 0.08);
+  }
 
-  <div>
-    <%= f.label :profile %>
-    <%= f.text_area :profile %>
-  </div>
+  .form-group {
+    margin-bottom: 24px;
+  }
 
-  <div>
-    <%= f.submit "登録する" %>
-  </div>
-<% end %>
+  .auth-input {
+    width: 100%;
+    padding: 12px;
+    margin-top: 8px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    font-size: 15px;
+    box-sizing: border-box;
+  }
+
+  .profile-textarea {
+    width: 100%;
+    padding: 14px;
+    margin-top: 8px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    font-size: 15px;
+    line-height: 1.6;
+    resize: vertical;
+    box-sizing: border-box;
+  }
+
+  .submit-area {
+    margin-top: 30px;
+  }
+
+  .auth-button {
+    width: 100%;
+    padding: 14px;
+    border: none;
+    border-radius: 10px;
+    font-size: 16px;
+    cursor: pointer;
+  }
+
+  .auth-links {
+    text-align: center;
+    margin-top: 24px;
+  }
+
+  .login-link {
+    display: inline-block;
+    margin-top: 10px;
+    font-weight: bold;
+  }
+
+  .error-box {
+    background: #ffe5e5;
+    border: 1px solid #ffb3b3;
+    padding: 16px;
+    border-radius: 10px;
+    margin-bottom: 24px;
+  }
+
+  .error-box ul {
+    margin-top: 10px;
+    padding-left: 20px;
+  }
+
+  @media (max-width: 600px) {
+    .auth-card {
+      padding: 25px;
+    }
+  }
+</style>

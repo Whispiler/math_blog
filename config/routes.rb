@@ -1,7 +1,8 @@
 Rails.application.routes.draw do
+  get "tags/show"
   root "posts#index"
 
-  resources :posts, only: [:index, :new, :create, :show]
+  resources :posts
 
   get "/signup", to: "users#new"
   post "/signup", to: "users#create"
@@ -9,4 +10,6 @@ Rails.application.routes.draw do
   get "/login", to: "sessions#new"
   post "/login", to: "sessions#create"
   delete "/logout", to: "sessions#destroy"
+
+  get "/tags/:name", to: "tags#show", as: :tag
 end

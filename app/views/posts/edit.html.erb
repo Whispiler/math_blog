@@ -1,0 +1,209 @@
+<h1>記事を編集</h1>
+
+<div class="editor-layout">
+
+  <!-- 左側: 編集 -->
+  <div class="editor-pane">
+
+    <%= form_with model: @post, local: true do |f| %>
+
+      <% if @post.errors.any? %>
+        <div class="error-box">
+          <h2>
+            <%= pluralize(@post.errors.count, "error") %> 件のエラーがあります
+          </h2>
+
+          <ul>
+            <% @post.errors.full_messages.each do |message| %>
+              <li><%= message %></li>
+            <% end %>
+          </ul>
+        </div>
+      <% end %>
+
+      <!-- タイトル -->
+      <div class="form-group">
+        <%= f.label :title, "タイトル" %>
+
+        <%= f.text_field :title,
+                         class: "title-input" %>
+      </div>
+
+      <!-- タグ -->
+      <div class="form-group">
+        <label>タグ</label>
+
+        <div class="tag-scroll-box">
+          <%= f.collection_check_boxes :tag_ids, Tag.all, :id, :name do |b| %>
+            <div class="tag-item">
+              <%= b.check_box %>
+              <%= b.label %>
+            </div>
+          <% end %>
+        </div>
+      </div>
+
+      <!-- 本文 -->
+      <div class="form-group">
+        <%= f.label :content, "本文 (Markdown / LaTeX対応)" %>
+
+        <%= f.text_area :content,
+                        id: "markdown-editor",
+                        rows: 30,
+                        class: "editor-textarea" %>
+      </div>
+
+      <div>
+        <%= f.submit "更新する", class: "submit-button" %>
+      </div>
+
+    <% end %>
+
+  </div>
+
+  <!-- 右側: プレビュー -->
+  <div class="preview-pane">
+
+    <h2>プレビュー</h2>
+
+    <div id="preview"></div>
+
+  </div>
+
+</div>
+
+<style>
+  .editor-layout {
+    display: flex;
+    gap: 30px;
+    align-items: flex-start;
+  }
+
+  .editor-pane,
+  .preview-pane {
+    width: 50%;
+  }
+
+  .form-group {
+    margin-bottom: 25px;
+  }
+
+  .title-input {
+    width: 100%;
+    padding: 10px;
+    font-size: 18px;
+  }
+
+  .editor-textarea {
+    width: 100%;
+    padding: 15px;
+    font-family: monospace;
+    font-size: 15px;
+    line-height: 1.6;
+  }
+
+  .tag-scroll-box {
+    max-height: 180px;
+    overflow-y: auto;
+    border: 1px solid #ccc;
+    padding: 10px;
+    background: white;
+    border-radius: 8px;
+  }
+
+  .tag-item {
+    margin-bottom: 8px;
+  }
+
+  .preview-pane {
+    position: sticky;
+    top: 20px;
+  }
+
+  #preview {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    min-height: 600px;
+    border: 1px solid #ddd;
+    overflow-x: auto;
+  }
+
+  .submit-button {
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+  }
+
+  .error-box {
+    background: #ffe5e5;
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+  }
+
+  @media (max-width: 900px) {
+    .editor-layout {
+      flex-direction: column;
+    }
+
+    .editor-pane,
+    .preview-pane {
+      width: 100%;
+    }
+
+    .preview-pane {
+      position: static;
+    }
+  }
+</style>
+
+<script>
+  document.addEventListener("turbo:load", () => {
+    const textarea = document.getElementById("markdown-editor");
+    const preview = document.getElementById("preview");
+
+    if (!textarea || !preview) return;
+
+    function updatePreview() {
+      let text = textarea.value;
+
+      // エスケープ
+      text = text
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;");
+
+      // コードブロック
+      text = text.replace(
+        /```(\w+)?\n([\s\S]*?)```/g,
+        '<pre><code>$2</code></pre>'
+      );
+
+      // 見出し
+      text = text.replace(/^### (.*$)/gim, '<h3>$1</h3>');
+      text = text.replace(/^## (.*$)/gim, '<h2>$1</h2>');
+      text = text.replace(/^# (.*$)/gim, '<h1>$1</h1>');
+
+      // 太字
+      text = text.replace(/\*\*(.*?)\*\*/gim, '<strong>$1</strong>');
+
+      // インラインコード
+      text = text.replace(/`(.*?)`/gim, '<code>$1</code>');
+
+      // 改行
+      text = text.replace(/\n/g, "<br>");
+
+      preview.innerHTML = text;
+
+      // MathJax再描画
+      if (window.MathJax) {
+        MathJax.typesetPromise([preview]);
+      }
+    }
+
+    textarea.addEventListener("input", updatePreview);
+
+    updatePreview();
+  });
+</script>

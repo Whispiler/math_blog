@@ -1,0 +1,19 @@
+<h1>#<%= @tag.name %> の記事一覧</h1>
+
+<% @posts.each do |post| %>
+  <div>
+    <h2>
+      <%= link_to post.title, post_path(post) %>
+    </h2>
+
+    <p>
+      投稿者：<%= post.user.name %>
+    </p>
+
+    <hr>
+  </div>
+<% end %>
+
+<p>
+  <%= link_to "記事一覧へ戻る", posts_path %>
+</p>

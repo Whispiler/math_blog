@@ -15,9 +15,41 @@
     <link rel="apple-touch-icon" href="/icon.png">
     <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
     <%= javascript_importmap_tags %>
+
+    <script>
+      MathJax = {
+        tex: {
+          inlineMath: [['$', '$'], ['\\(', '\\)']]
+        }
+      };
+    </script>
+
+    <script
+      id="MathJax-script"
+      async
+      src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+    </script>
+
+    <link rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github.min.css">
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
   </head>
 
   <body>
-    <%= yield %>
+    <div style="margin-bottom:20px;">
+      <%= link_to "Home", root_path %> |
+      <% if current_user %>
+      <%= link_to "投稿", new_post_path %> |
+      <%= link_to "ログアウト", logout_path, method: :delete, data: { turbo_method: :delete } %>
+        <% else %>
+      <%= link_to "ログイン", login_path %>
+        <% end %>
+    </div>
+    <div class="container">
+      <%= yield %>
+    </div>
   </body>
 </html>

@@ -1,8 +1,77 @@
-<h1>数学記事一覧</h1>
+
+<section class="hero">
+  <h1>Math Blog</h1>
+
+  <p>
+    数学、プログラミング、CG表現を組み合わせた実験的ブログです。
+  </p>
+</section>
+
+<canvas id="bg"></canvas>
+
+<%= form_with url: posts_path, method: :get, local: true do |f| %>
+  <%= f.text_field :keyword, placeholder: "記事を検索" %>
+  <%= f.submit "検索" %>
+<% end %>
+
+<hr>
 
 <p>
   <%= link_to "新規投稿", new_post_path %>
 </p>
+
+<section class="about">
+  <h2>About This Site</h2>
+
+  <p>
+    このサイトは、数学を単なる計算や記号として扱うのではなく、
+    「視覚的に体験できるもの」として表現することを目的に制作しています。
+  </p>
+
+  <p>
+    数式や定理は紙の上だけに存在するものではなく、
+    空間的な構造や反復、成長、対称性といった
+    多様なイメージを内包していると感じています。
+  </p>
+
+  <p>
+    特にフラクタルや幾何学的構造には強い関心があり、
+    BlenderやThree.jsを用いて、
+    数学的な概念をインタラクティブな形で表現することを試みています。
+  </p>
+
+  <p>
+    背景に表示されているフラクタルツリーは、
+    再帰構造や自己相似性をモチーフにしており、
+    スクロールによって成長する演出を取り入れています。
+  </p>
+
+  <p>
+    また、このブログでは数式をLaTeXで記述できるだけでなく、
+    Markdownによる記事作成やコードハイライトにも対応しています。
+  </p>
+
+   <p>
+    数学、プログラミング、デザイン表現を横断しながら、
+    「抽象的な概念をどのようにWeb上で体験へ変換できるか」
+    をテーマに継続的に開発しています。
+  </p>
+</section>
+
+
+
+<section class="features">
+  <h2>Features</h2>
+
+  <ul>
+    <li>Ruby on Rails 7</li>
+    <li>Markdown</li>
+    <li>MathJax</li>
+    <li>Three.js</li>
+    <li>Blender</li>
+    <li>Docker</li>
+  </ul>
+</section>
 
 <% @posts.each do |post| %>
   <div style="margin-bottom: 20px;">
