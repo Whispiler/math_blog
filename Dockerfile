@@ -40,7 +40,7 @@ COPY . .
 RUN bundle exec bootsnap precompile --gemfile
 RUN bundle exec bootsnap precompile app/ lib/
 
-RUN SECRET_KEY_BASE_DUMMY=1 bundle exec rails assets:precompile
+
 # ---- final stage ----
 FROM base
 
