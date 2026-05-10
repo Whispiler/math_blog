@@ -17,7 +17,7 @@ RUN apt-get update -qq && \
     rm -rf /var/lib/apt/lists /var/cache/apt/archives
 
 # Set production environment
-ENV RAILS_ENV="development" \
+ENV RAILS_ENV="production" \
     BUNDLE_PATH="/usr/local/bundle"
 
 # Throw-away build stage to reduce size of final image
@@ -41,9 +41,7 @@ COPY . .
 RUN bundle exec bootsnap precompile app/ lib/
 
 # Precompiling assets for production without requiring secret RAILS_MASTER_KEY
-RUN SECRET_KEY_BASE_DUMMY=1 ./bin/rails assets:precompile
-
-
+RUN SECRET_KEY_BASE_DUMMY=1 bundle exec rails assets:precompile
 
 
 # Final stage for app image
