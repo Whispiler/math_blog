@@ -16,7 +16,7 @@ Rails.application.configure do
 
   # ★ 本番ストレージ（今はローカルだが、将来的には変更推奨）
   config.active_storage.service = :local
-
+  config.assets.compile = true
   # ★ SSL強制（あなたは既にONでOK）
   config.force_ssl = true
   config.hosts << "math-blog-gwc5.onrender.com"
